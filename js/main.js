@@ -91,7 +91,7 @@ function getMarkers() {
 
 function readInsertMarkers(markersArray) {
     markersArray.forEach(marker => {
-        L.marker([marker.poi_lat, marker_poi_lon]).addTo(main_map);
+        L.marker([marker.poi_lat, marker.poi_lon]).addTo(main_map);
     });
 };
 
