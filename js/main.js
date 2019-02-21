@@ -8,7 +8,7 @@ L_DISABLE_3D = false;
 var urlBack = "/.netlify/functions/pg_connect"
 
 // SQL query for fetching names and texts of all markers
-var selectAllQuery = "SELECT poi_name, poi_text FROM json_ict442";
+var selectAllQuery = "SELECT poi_name, poi_text, date_uploaded, poi_lat, poi_lon FROM json_ict442";
 
 // Tiles from different providers
 var openStreetXYZ = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -76,20 +76,30 @@ function getMarkers() {
          JSON.stringify({dbQuery: selectAllQuery}))
     .then(data => {
         var rows = data.rows;
+        // Insert the markers in the map
+        readInsertMarkers(rows);
+        
         rows.forEach(marker => {
             console.log("MARKER NAME: " + marker.poi_name);
             console.log("MARKER TEXT: " + marker.poi_text);
-        })
+            console.log("MARKER LATITUDE: " + marker.poi_lat);
+            console.log("MARKER LONGITUDE: " + marker.poi_lon);
+        });
     })
-}
+};
+
+
+function readInsertMarkers(markersArray) {
+    markersArray.forEach(marker => {
+        L.marker([marker.poi_lat, marker_poi_lon]).addTo(main_map);
+    });
+};
+
 
 // Wait until all DOM elements are ready, so that their
 // invocation does not fail.
 document.addEventListener("DOMContentLoaded", initMap);
 
-function evalString(input_text) {
-    return '`' + input_text + '`';
-}
 
 function initMap() {
 
@@ -150,7 +160,6 @@ function initMap() {
         overlays: {}
     };
 } // 'initMap' function ends
-
 
 
 function mapClicked(event) {
