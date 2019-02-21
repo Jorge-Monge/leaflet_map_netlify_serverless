@@ -5,7 +5,7 @@ L_DISABLE_3D = false;
 // URL of the back-end function
 // It is a Node JS function that is used to
 // interact with a PostgreSQL database in the cloud
-var urlBack = "http://localhost:9000/pg_connect"
+var urlBack = "/.netlify/functions/pg_connect"
 
 // SQL query for fetching names and texts of all markers
 var selectAllQuery = "SELECT poi_name, poi_text FROM json_ict442";
@@ -61,11 +61,8 @@ async function httpPerformRequest(url, httpMethod, httpBody) {
     return (await fetch(url, {
             method: httpMethod,
             headers: {
-                 mode: "no-cors",
                 'Accept': "application/json, text/plain, */*",
                 'Content-type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Origin, x-Requested-Width, Content-Type, Accept'
             },
             body: httpBody
         })).json();
